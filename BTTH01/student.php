@@ -18,21 +18,17 @@ class Student
     public function readfile()
     {
 
-        // $filename = './file.txt';
-        // $myfile = fopen($filename, "r");
+        $filename = './file.txt';
+        $myfile = fopen($filename, "r");
 
-        // $contents = fread($myfile, filesize($filename)); //đọc file
+        $contents = fread($myfile, filesize($filename)); //đọc file
 
-        // $convert = json_encode($contents);
+        $convert = json_encode($contents);
 
-        // echo $convert;
+        echo $convert;
 
-        // // đóng file
-        // fclose($myfile);
-
-        $lines = file('file.txt');
-
-        echo $lines;
+        // đóng file
+        fclose($myfile);
     }
 }
 
