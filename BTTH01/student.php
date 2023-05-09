@@ -1,37 +1,49 @@
 <?php
-class Student
+class SinhVien
 {
-    public $firstName;
-    public $lastName;
+    public $ten;
+    public $tuoi;
+}
 
-    public function __construct($firstName, $lastName)
+class DanhSachSinhVien
+{
+    public $danh_sach = [];
+
+    public function docDuLieuTuFile($ten_file)
     {
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
+        $file = fopen($ten_file, 'r');
+        if ($file) {
+            while (($dong = fgets($file)) !== false) {
+                $thong_tin = explode(',', $dong);
+                $sinh_vien = new SinhVien();
+                $sinh_vien->ten = $thong_tin[0];
+                $sinh_vien->tuoi = $thong_tin[1];
+                $this->danh_sach[] = $sinh_vien;
+            }
+            fclose($file);
+        } else {
+            echo 'Khong mo duoc file';
+        }
     }
 
-    public function sayHello()
+    public function luuDanhSachVaoFile($ten_file)
     {
-        echo 'Hello, my name is ' . $this->firstName . ' and I am ' . $this->lastName . ' years old.';
+        $file = fopen($ten_file, 'w');
+        foreach ($this->danh_sach as $sinh_vien) {
+            $line = $sinh_vien->ten . ',' . $sinh_vien->tuoi . "\n";
+            fwrite($file, $line);
+        }
+        fclose($file);
     }
 
-    public function readfile()
+    public function hienThiDanhSach()
     {
-
-        $filename = './file.txt';
-        $myfile = fopen($filename, "r");
-
-        $contents = fread($myfile, filesize($filename)); //đọc file
-
-        $convert = json_encode($contents);
-
-        echo $convert;
-
-        // đóng file
-        fclose($myfile);
+        foreach ($this->danh_sach as $sinh_vien) {
+            echo 'Ten: ' . $sinh_vien->ten . ', Tuoi: ' . $sinh_vien->tuoi . '<br>';
+        }
     }
 }
 
-$student1 = new Student('le', 'cuong');
-
-$student1->readfile();
+$danh_sach_sinh_vien = new DanhSachSinhVien();
+$danh_sach_sinh_vien->docDuLieuTuFile("listOfStudent.txt");
+$danh_sach_sinh_vien->hienThiDanhSach();
