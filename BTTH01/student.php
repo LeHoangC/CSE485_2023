@@ -1,37 +1,53 @@
 <?php
-class Student
-{
-    public $firstName;
-    public $lastName;
+$file = 'student.txt';
+$data = file_get_contents($file);
 
-    public function __construct($firstName, $lastName)
-    {
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-    }
+// Tách dữ liệu thành một mảng chứa từng phần tử
+$lines = explode("\n", $data);
 
-    public function sayHello()
-    {
-        echo 'Hello, my name is ' . $this->firstName . ' and I am ' . $this->lastName . ' years old.';
-    }
+// Tách từng phần tử thành các giá trị
+$data_array = array();
+foreach ($lines as $line) {
 
-    public function readfile()
-    {
+    $values = explode(",", $line);
 
-        $filename = './file.txt';
-        $myfile = fopen($filename, "r");
-
-        $contents = fread($myfile, filesize($filename)); //đọc file
-
-        $convert = json_encode($contents);
-
-        echo $convert;
-
-        // đóng file
-        fclose($myfile);
-    }
+    $data_array[] = array(
+        'id' => trim($values[0]),
+        'name' => trim($values[1]),
+        'age' => trim($values[2])
+    );
 }
 
-$student1 = new Student('le', 'cuong');
+// Chuyển đổi mảng thành định dạng JSON
+$json = json_encode($data_array);
 
-$student1->readfile();
+// In kết quả
+echo $json;
+
+
+
+
+$file_test = fopen($filename, 'a+');
+
+rewind($file_test);
+
+$data = fread($file_test, filesize($filename));
+
+// $data = file_get_contents($filename);
+// Tách dữ liệu thành một mảng chứa từng phần tử
+$lines = explode("\n", $data);
+
+// Tách từng phần tử thành các giá trị
+$data_array = [];
+foreach ($lines as $line) {
+    $values = explode(',', $line);
+    $data_array[] = [
+        'first_name' => trim($values[0]),
+        'last_name' => trim($values[1]),
+        'age' => trim($values[2]),
+    ];
+}
+
+$json = json_encode($data_array);
+
+$this->list_student = $json;
