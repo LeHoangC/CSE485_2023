@@ -1,2 +1,0 @@
-cuong,21
-cuong 1,43

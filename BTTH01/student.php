@@ -1,49 +1,53 @@
 <?php
-class SinhVien
-{
-    public $ten;
-    public $tuoi;
+$file = 'student.txt';
+$data = file_get_contents($file);
+
+// Tách dữ liệu thành một mảng chứa từng phần tử
+$lines = explode("\n", $data);
+
+// Tách từng phần tử thành các giá trị
+$data_array = array();
+foreach ($lines as $line) {
+
+    $values = explode(",", $line);
+
+    $data_array[] = array(
+        'id' => trim($values[0]),
+        'name' => trim($values[1]),
+        'age' => trim($values[2])
+    );
 }
 
-class DanhSachSinhVien
-{
-    public $danh_sach = [];
+// Chuyển đổi mảng thành định dạng JSON
+$json = json_encode($data_array);
 
-    public function docDuLieuTuFile($ten_file)
-    {
-        $file = fopen($ten_file, 'r');
-        if ($file) {
-            while (($dong = fgets($file)) !== false) {
-                $thong_tin = explode(',', $dong);
-                $sinh_vien = new SinhVien();
-                $sinh_vien->ten = $thong_tin[0];
-                $sinh_vien->tuoi = $thong_tin[1];
-                $this->danh_sach[] = $sinh_vien;
-            }
-            fclose($file);
-        } else {
-            echo 'Khong mo duoc file';
-        }
-    }
+// In kết quả
+echo $json;
 
-    public function luuDanhSachVaoFile($ten_file)
-    {
-        $file = fopen($ten_file, 'w');
-        foreach ($this->danh_sach as $sinh_vien) {
-            $line = $sinh_vien->ten . ',' . $sinh_vien->tuoi . "\n";
-            fwrite($file, $line);
-        }
-        fclose($file);
-    }
 
-    public function hienThiDanhSach()
-    {
-        foreach ($this->danh_sach as $sinh_vien) {
-            echo 'Ten: ' . $sinh_vien->ten . ', Tuoi: ' . $sinh_vien->tuoi . '<br>';
-        }
-    }
+
+
+$file_test = fopen($filename, 'a+');
+
+rewind($file_test);
+
+$data = fread($file_test, filesize($filename));
+
+// $data = file_get_contents($filename);
+// Tách dữ liệu thành một mảng chứa từng phần tử
+$lines = explode("\n", $data);
+
+// Tách từng phần tử thành các giá trị
+$data_array = [];
+foreach ($lines as $line) {
+    $values = explode(',', $line);
+    $data_array[] = [
+        'first_name' => trim($values[0]),
+        'last_name' => trim($values[1]),
+        'age' => trim($values[2]),
+    ];
 }
 
-$danh_sach_sinh_vien = new DanhSachSinhVien();
-$danh_sach_sinh_vien->docDuLieuTuFile("listOfStudent.txt");
-$danh_sach_sinh_vien->hienThiDanhSach();
+$json = json_encode($data_array);
+
+$this->list_student = $json;

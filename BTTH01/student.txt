@@ -1,0 +1,6 @@
+1, cuong, 21
+2, thao, 24
+3, mom, 17
+4, huy, 12
+5, hoa, 12
+6, hung, 17
